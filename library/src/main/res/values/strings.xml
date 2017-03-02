@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="moderncamera_editor_submit">SEND</string>
+    <string name="moderncamera_editor_text">WRITE</string>
+</resources>

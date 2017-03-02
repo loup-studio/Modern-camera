@@ -1,0 +1,29 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 25
+    buildToolsVersion "25.0.2"
+    defaultConfig {
+        applicationId "io.intheloup.moderncamera.app"
+        minSdkVersion 16
+        targetSdkVersion 25
+        versionCode 1
+        versionName "1.0"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+repositories {
+    jcenter()
+    maven { url "https://s3.amazonaws.com/repo.commonsware.com" }
+}
+
+dependencies {
+    compile project(':library')
+    compile 'com.android.support:appcompat-v7:25.2.0'
+}

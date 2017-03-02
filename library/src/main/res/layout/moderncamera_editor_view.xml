@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:tools="http://schemas.android.com/tools"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/moderncamera_editor_picture_imageview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"/>
+
+    <FrameLayout
+        android:id="@+id/moderncamera_editor_panel_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <Button
+            android:id="@+id/moderncamera_editor_submit_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|right"
+            android:layout_marginBottom="16dp"
+            android:layout_marginRight="16dp"
+            android:background="@android:color/transparent"
+            android:stateListAnimator="@null"
+            android:text="@string/moderncamera_editor_submit"
+            android:textColor="@android:color/white"
+            tools:targetApi="lollipop"/>
+
+        <Button
+            android:id="@+id/moderncamera_editor_text_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="16dp"
+            android:background="@android:color/transparent"
+            android:stateListAnimator="@null"
+            android:text="@string/moderncamera_editor_text"
+            android:textColor="@android:color/white"
+            tools:targetApi="lollipop"/>
+    </FrameLayout>
+
+</FrameLayout>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+       xmlns:tools="http://schemas.android.com/tools"
+       android:layout_width="match_parent"
+       android:layout_height="match_parent">
+
+    <ImageButton
+        android:id="@+id/moderncamera_control_switch_camera_button"
+        android:layout_width="44dp"
+        android:layout_height="44dp"
+        android:layout_gravity="bottom|right"
+        android:layout_marginBottom="28dp"
+        android:layout_marginRight="20dp"
+        android:background="@drawable/moderncamera_control_button_background"
+        android:src="@drawable/ic_moderncamera_switch_camera"
+        android:stateListAnimator="@null"
+        tools:targetApi="lollipop"/>
+
+    <ImageButton
+        android:id="@+id/moderncamera_control_take_picture_button"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/moderncamera_control_take_picture_background"
+        android:src="@drawable/moderncamera_control_take_picture"
+        android:stateListAnimator="@null"
+        tools:targetApi="lollipop"/>
+
+</merge>

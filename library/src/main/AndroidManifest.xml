@@ -1,0 +1,11 @@
+<manifest package="io.intheloup.moderncamera"
+          xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <application>
+        <activity
+            android:name="io.intheloup.moderncamera.activity.ModernCameraActivity"
+            android:theme="@style/ModernCameraTheme"
+            />
+    </application>
+
+</manifest>
