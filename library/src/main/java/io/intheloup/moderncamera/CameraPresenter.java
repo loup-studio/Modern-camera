@@ -126,6 +126,7 @@ class CameraPresenter {
 
         clearFile();
         view.bindCamera();
+        start();
         return true;
     }
 
@@ -162,6 +163,10 @@ class CameraPresenter {
     }
 
     private void startController() {
+        if (controller.getEngine() != null) {
+            return;
+        }
+
         CameraEngine engine = CameraEngine.buildInstance(view.getContext(), null);
         engine.setPreferredFlashModes(new ArrayList<FlashMode>());
         controller.setEngine(engine, new CameraSelectionCriteria.Builder()
@@ -196,6 +201,7 @@ class CameraPresenter {
         }
 
         view.bindPicture(file.getUri());
+        stop();
     }
 
     @SuppressWarnings("unused")

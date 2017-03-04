@@ -4,42 +4,128 @@
              android:layout_width="match_parent"
              android:layout_height="match_parent">
 
-    <ImageView
-        android:id="@+id/moderncamera_editor_picture_imageview"
+    <FrameLayout
+        android:id="@+id/moderncamera_editor_content_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scaleType="centerCrop"/>
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/moderncamera_editor_picture_imageview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"/>
+
+        <TextView
+            android:id="@+id/moderncamera_editor_simple_textview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_marginBottom="200dp"
+            android:background="#CC000000"
+            android:gravity="center"
+            android:paddingBottom="5dp"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:paddingTop="5dp"
+            android:textColor="@android:color/white"
+            android:textSize="25sp"
+            android:visibility="gone"/>
+
+        <team.uptech.motionviews.widget.RichEditText
+            android:id="@+id/moderncamera_editor_motion_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="invisible"/>
+
+
+    </FrameLayout>
+
+    <EditText
+        android:id="@+id/moderncamera_editor_edittext"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginTop="-70dp"
+        android:background="#CC000000"
+        android:gravity="center"
+        android:inputType="textMultiLine|textCapSentences|textNoSuggestions"
+        android:paddingBottom="6dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:paddingTop="5dp"
+        android:textColor="@android:color/white"
+        android:textCursorDrawable="@drawable/moderncamera_editor_edittext_white_cursor"
+        android:textSize="25sp"
+        android:visibility="gone"/>
 
     <FrameLayout
         android:id="@+id/moderncamera_editor_panel_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="65dp"
+            android:background="@drawable/moderncamera_editor_top_gradient"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="65dp"
+            android:layout_gravity="bottom"
+            android:background="@drawable/moderncamera_editor_bottom_gradient"/>
+
         <Button
             android:id="@+id/moderncamera_editor_submit_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|right"
-            android:layout_marginBottom="16dp"
-            android:layout_marginRight="16dp"
+            android:layout_marginBottom="2dp"
+            android:layout_marginRight="12dp"
             android:background="@android:color/transparent"
             android:stateListAnimator="@null"
             android:text="@string/moderncamera_editor_submit"
             android:textColor="@android:color/white"
+            android:textSize="21sp"
             tools:targetApi="lollipop"/>
 
-        <Button
-            android:id="@+id/moderncamera_editor_text_button"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="right"
-            android:layout_marginRight="16dp"
-            android:layout_marginTop="16dp"
-            android:background="@android:color/transparent"
-            android:stateListAnimator="@null"
-            android:text="@string/moderncamera_editor_text"
-            android:textColor="@android:color/white"
-            tools:targetApi="lollipop"/>
+            android:layout_marginRight="24dp"
+            android:layout_marginTop="24dp"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/moderncamera_editor_text_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:src="@drawable/ic_moderncamera_editor_text"
+                android:stateListAnimator="@null"
+                android:text="@string/moderncamera_editor_text"
+                tools:targetApi="lollipop"/>
+
+            <ImageButton
+                android:id="@+id/moderncamera_editor_color_button"
+                android:visibility="gone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:src="@drawable/ic_moderncamera_editor_color"
+                android:stateListAnimator="@null"
+                android:text="@string/moderncamera_editor_text"
+                tools:targetApi="lollipop"/>
+        </LinearLayout>
+
+        <io.intheloup.moderncamera.editor.VerticalSlideColorPicker
+            android:id="@+id/moderncamera_editor_colorpicker"
+            android:layout_width="20dp"
+            android:layout_height="200dp"
+            android:layout_gravity="right"
+            android:layout_marginRight="12dp"
+            android:layout_marginTop="110dp"
+            android:visibility="invisible"/>
     </FrameLayout>
 
 </FrameLayout>

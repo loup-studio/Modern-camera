@@ -128,7 +128,7 @@ public class ModernCameraView extends FrameLayout {
 
     void bindCamera() {
         Log.d(getClass().getSimpleName(), "bindCamera: ");
-        editorView.clearPicture();
+        editorView.clear();
         editorView.setVisibility(GONE);
         controlView.setVisibility(VISIBLE);
     }

@@ -26,9 +26,11 @@ public class EditorPresenter {
             return;
         }
 
-        view.setDrawingCacheEnabled(true);
-        Bitmap bitmap = Bitmap.createBitmap(view.getDrawingCache());
-        view.setDrawingCacheEnabled(false);
+        view.bindBusy(true);
+
+        view.contentView.setDrawingCacheEnabled(true);
+        Bitmap bitmap = Bitmap.createBitmap(view.contentView.getDrawingCache());
+        view.contentView.setDrawingCacheEnabled(false);
 
         CameraFile file = new CameraFile(view.getContext(), "picture_final");
 
