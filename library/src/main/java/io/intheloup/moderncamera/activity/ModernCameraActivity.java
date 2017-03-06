@@ -44,7 +44,7 @@ public class ModernCameraActivity extends AppCompatActivity {
 
         boolean isValid = true;
         for (int i = 0; i < grantResults.length; ++i) {
-            if (i != PackageManager.PERMISSION_GRANTED) {
+            if (grantResults[i] != PackageManager.PERMISSION_GRANTED) {
                 isValid = false;
                 break;
             }
