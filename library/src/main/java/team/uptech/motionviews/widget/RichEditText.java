@@ -10,12 +10,10 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.view.GestureDetectorCompat;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
-import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
 
 import com.almeros.android.multitouch.MoveGestureDetector;
@@ -118,19 +116,18 @@ public class RichEditText extends FrameLayout {
 
         updateUI();
 
-        getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
-            @Override
-            public boolean onPreDraw() {
-                Log.d(TAG, "onPreDraw: ");
-                if (getWidth() == 0 || getHeight() == 0) return true;
-                if (!getViewTreeObserver().isAlive()) return true;
-                getViewTreeObserver().removeOnPreDrawListener(this);
-
-                addTextSticker();
-
-                return true;
-            }
-        });
+//        getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+//            @Override
+//            public boolean onPreDraw() {
+//                getViewTreeObserver().removeOnPreDrawListener(this);
+//                if (!getViewTreeObserver().isAlive()) return true;
+//                if (getWidth() == 0 || getHeight() == 0) return true;
+//                Log.d(TAG, "onPreDraw: ");
+//                addTextSticker();
+//
+//                return true;
+//            }
+//        });
     }
 
     public void onSelectText(OnSelectTextCallback onSelectTextCallback) {
@@ -166,7 +163,7 @@ public class RichEditText extends FrameLayout {
         textEntity.moveCenterTo(center);
 
         // redraw
-        invalidate();
+//        invalidate();
 
 //        startTextEntityEditing();
     }
@@ -187,7 +184,7 @@ public class RichEditText extends FrameLayout {
     public void addEntityAndPosition(TextEntity entity) {
         initialTranslateAndScale(entity);
         selectedEntity = entity;
-        invalidate();
+//        invalidate();
 
 //        if (entity != null) {
 ////            initEntityBorder(entity);
@@ -396,6 +393,10 @@ public class RichEditText extends FrameLayout {
 
 
     public void updateText(String text) {
+        if (selectedEntity == null) {
+            addTextSticker();
+        }
+
         TextLayer textLayer = selectedEntity.getLayer();
 
         if (!text.equals(textLayer.getText())) {
