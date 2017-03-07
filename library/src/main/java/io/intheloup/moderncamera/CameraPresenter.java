@@ -177,13 +177,7 @@ class CameraPresenter {
 
     private void prepController() {
         Log.d(getClass().getSimpleName(), "prepController: ");
-
-        LinkedList<CameraView> cameraViews = new LinkedList<CameraView>();
-        CameraView cv = view.cameraView;
-        cv.setMirror(false);
-        cameraViews.add(cv);
-        cameraViews.addAll(view.bindCameras(controller.getNumberOfCameras()));
-        controller.setCameraViews(cameraViews);
+        controller.setCameraViews(view.bindCameras(controller.getNumberOfCameras()));
     }
 
     private void clearFile() {

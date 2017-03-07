@@ -25,7 +25,7 @@ public class ModernCameraView extends FrameLayout {
     private static final int PINCH_ZOOM_DELTA = 20;
 
     final ViewGroup previewStack = new FrameLayout(getContext());
-    final CameraView cameraView = new CameraView(getContext());
+    //        final CameraView cameraView = new CameraView(getContext());
     final ScaleGestureDetector scaleDetector = new ScaleGestureDetector(getContext(), new ScaleListener());
     final CameraControlView controlView = new CameraControlView(getContext());
     final EditorView editorView = new EditorView(getContext());
@@ -53,7 +53,6 @@ public class ModernCameraView extends FrameLayout {
         setBackgroundColor(Color.BLACK);
 
         addView(previewStack, new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-        previewStack.addView(cameraView, new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
 
         addView(controlView, new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         controlView.takePictureButton.setOnClickListener(new OnClickListener() {
@@ -92,13 +91,18 @@ public class ModernCameraView extends FrameLayout {
     }
 
     LinkedList<CameraView> bindCameras(int count) {
+        previewStack.removeAllViews();
+
         LinkedList<CameraView> cameraViews = new LinkedList<CameraView>();
         CameraView cv;
-        for (int i = 1; i < count; i++) {
+        for (int i = 0; i < count; ++i) {
             cv = new CameraView(getContext());
-            cv.setVisibility(View.INVISIBLE);
+
+            if (i > 0) {
+                cv.setVisibility(View.INVISIBLE);
+            }
             cv.setMirror(false);
-            previewStack.addView(cv);
+            previewStack.addView(cv, new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
             cameraViews.add(cv);
         }
 
