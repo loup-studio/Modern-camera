@@ -29,6 +29,6 @@ repositories {
 dependencies {
     compile 'com.android.support:appcompat-v7:25.2.0'
 //    compile 'com.commonsware.cwac:cam2:0.7.4'
-    compile 'com.github.baurine:CameraKit-Android:publish_to_jitpack-SNAPSHOT'
+    compile 'com.github.baurine:CameraKit-Android:1.0.5'
 //    compile 'com.github.gogopop:CameraKit-Android:-SNAPSHOT'
 }
