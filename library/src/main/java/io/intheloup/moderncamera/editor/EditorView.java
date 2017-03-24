@@ -128,7 +128,15 @@ public class EditorView extends FrameLayout {
                 if (isBusy) return;
 
                 commitEdit();
-                presenter.didSubmitPicture();
+                bindBusy(true);
+
+                // give the time for commit to apply changes on view before taking the screenshot
+                post(new Runnable() {
+                    @Override
+                    public void run() {
+                        presenter.didSubmitPicture();
+                    }
+                });
             }
         });
 

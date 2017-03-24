@@ -23,6 +23,7 @@ public class EditorPresenter {
 
     void didSubmitPicture() {
         if (!Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
+            view.bindBusy(false);
             return;
         }
 
@@ -37,7 +38,7 @@ public class EditorPresenter {
         FileOutputStream fos = null;
         try {
             fos = new FileOutputStream(file.getFile());
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 85, fos);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 80, fos);
             fos.flush();
             fos.close();
         } catch (Exception e) {
