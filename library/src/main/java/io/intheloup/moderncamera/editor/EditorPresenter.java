@@ -38,7 +38,7 @@ public class EditorPresenter {
         FileOutputStream fos = null;
         try {
             fos = new FileOutputStream(file.getFile());
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 80, fos);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 90, fos);
             fos.flush();
             fos.close();
         } catch (Exception e) {
