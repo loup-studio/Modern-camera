@@ -1,19 +1,22 @@
 package io.intheloup.moderncamera;
 
+import android.app.Activity;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.view.MotionEvent;
-import android.view.ScaleGestureDetector;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
-import com.commonsware.cwac.cam2.CameraView;
-
-import java.util.LinkedList;
+import com.flurgle.camerakit.CameraKit;
+import com.flurgle.camerakit.CameraListener;
+import com.flurgle.camerakit.CameraView;
 
 import io.intheloup.moderncamera.editor.EditorView;
 
@@ -22,17 +25,12 @@ import io.intheloup.moderncamera.editor.EditorView;
  */
 public class ModernCameraView extends FrameLayout {
 
-    private static final int PINCH_ZOOM_DELTA = 20;
+    private CameraView cameraView;
+    private CameraControlView controlView;
+    public EditorView editorView;
 
-    final ViewGroup previewStack = new FrameLayout(getContext());
-    //        final CameraView cameraView = new CameraView(getContext());
-    final ScaleGestureDetector scaleDetector = new ScaleGestureDetector(getContext(), new ScaleListener());
-    final CameraControlView controlView = new CameraControlView(getContext());
-    final EditorView editorView = new EditorView(getContext());
-
-    private OnTakePictureCallback onTakePictureCallback;
-    private final CameraPresenter presenter = new CameraPresenter(this);
-
+    private boolean isCameraReady = false;
+    private Handler handler = new Handler(Looper.getMainLooper());
 
     public ModernCameraView(Context context) {
         super(context);
@@ -49,84 +47,60 @@ public class ModernCameraView extends FrameLayout {
         init(context);
     }
 
-    private void init(Context context) {
+    private void init(final Context context) {
         setBackgroundColor(Color.BLACK);
+        View view = LayoutInflater.from(context).inflate(R.layout.moderncamera_view, this, true);
+        cameraView = (CameraView) view.findViewById(R.id.camera);
+        cameraView.setCameraListener(new CameraListener() {
+            @Override
+            public void onCameraOpened() {
+                isCameraReady = true;
+            }
 
-        addView(previewStack, new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+            @Override
+            public void onCameraClosed() {
+                isCameraReady = false;
+            }
 
-        addView(controlView, new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+            @Override
+            public void onPictureTaken(byte[] jpeg) {
+                final Bitmap bitmap = BitmapFactory.decodeByteArray(jpeg, 0, jpeg.length);
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        bindPicture(bitmap);
+                    }
+                });
+            }
+        });
+
+        controlView = (CameraControlView) view.findViewById(R.id.camera_control);
         controlView.takePictureButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                presenter.didClickTakePicture();
+                if (!isCameraReady) return;
+                cameraView.captureImage();
             }
         });
+
         controlView.switchCameraButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                presenter.didClickSwitchCamera();
+                if (!isCameraReady) return;
+                cameraView.toggleFacing();
+                cameraView.setFocus(CameraKit.Constants.FOCUS_CONTINUOUS);
             }
         });
 
-        addView(editorView, new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-        editorView.setVisibility(GONE);
-        editorView.onSubmitPicture(new EditorView.OnSubmitPictureCallback() {
-            @Override
-            public void onSubmitPicture(Uri uri) {
-                onTakePictureCallback.onTakePicture(uri);
-            }
-        });
+        editorView = (EditorView) view.findViewById(R.id.editor);
     }
 
-    @Override
-    protected void onAttachedToWindow() {
-        super.onAttachedToWindow();
-        presenter.onReady();
-    }
-
-    @Override
-    protected void onDetachedFromWindow() {
-        presenter.onDrop();
-        super.onDetachedFromWindow();
-    }
-
-    LinkedList<CameraView> bindCameras(int count) {
-        previewStack.removeAllViews();
-
-        LinkedList<CameraView> cameraViews = new LinkedList<CameraView>();
-        CameraView cv;
-        for (int i = 0; i < count; ++i) {
-            cv = new CameraView(getContext());
-
-            if (i > 0) {
-                cv.setVisibility(View.INVISIBLE);
-            }
-            cv.setMirror(false);
-            previewStack.addView(cv, new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-            cameraViews.add(cv);
-        }
-
-        return cameraViews;
-    }
-
-    void bindZoom(boolean isEnabled) {
-        if (isEnabled) {
-            previewStack.setOnTouchListener(
-                    new OnTouchListener() {
-                        @Override
-                        public boolean onTouch(View v, MotionEvent event) {
-                            return (scaleDetector.onTouchEvent(event));
-                        }
-                    });
-        } else {
-            previewStack.setOnTouchListener(null);
-        }
-    }
-
-    void bindPicture(Uri uri) {
-        Log.d(getClass().getSimpleName(), "bindPicture: " + uri);
-        editorView.setPicture(uri);
+    void bindPicture(Bitmap bitmap) {
+        Log.d(getClass().getSimpleName(), "bindPicture: ");
+        editorView.setPicture(bitmap);
         editorView.setVisibility(VISIBLE);
+
+        cameraView.setVisibility(GONE);
         controlView.setVisibility(GONE);
     }
 
@@ -134,40 +108,25 @@ public class ModernCameraView extends FrameLayout {
         Log.d(getClass().getSimpleName(), "bindCamera: ");
         editorView.clear();
         editorView.setVisibility(GONE);
+
+        cameraView.setVisibility(VISIBLE);
         controlView.setVisibility(VISIBLE);
     }
 
     public boolean onBackPressed() {
-        return presenter.onBackPressed();
+        if (editorView.getVisibility() == VISIBLE) {
+            bindCamera();
+            return true;
+        }
+
+        return false;
     }
 
     public void start() {
-        presenter.start();
+        cameraView.start();
     }
 
-    public void onTakePicture(OnTakePictureCallback onTakePictureCallback) {
-        this.onTakePictureCallback = onTakePictureCallback;
-    }
-
-    private class ScaleListener extends ScaleGestureDetector.SimpleOnScaleGestureListener {
-        @Override
-        public void onScaleEnd(ScaleGestureDetector detector) {
-            float scale = detector.getScaleFactor();
-            int delta;
-
-            if (scale > 1.0f) {
-                delta = PINCH_ZOOM_DELTA;
-            } else if (scale < 1.0f) {
-                delta = -1 * PINCH_ZOOM_DELTA;
-            } else {
-                return;
-            }
-
-            presenter.didChangeZoom(delta);
-        }
-    }
-
-    public interface OnTakePictureCallback {
-        void onTakePicture(Uri uri);
+    public void stop() {
+        cameraView.stop();
     }
 }

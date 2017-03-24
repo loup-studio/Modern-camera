@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+       android:layout_width="match_parent"
+       android:layout_height="match_parent">
+
+    <com.flurgle.camerakit.CameraView android:id="@+id/camera"
+                                      xmlns:camerakit="http://schemas.android.com/apk/res-auto"
+                                      android:layout_width="match_parent"
+                                      android:layout_height="match_parent"
+                                      camerakit:ckCropOutput="true"
+                                      camerakit:ckFacing="back"
+                                      camerakit:ckFlash="auto"
+                                      camerakit:ckFocus="continuous"
+                                      camerakit:ckJpegQuality="100"
+                                      camerakit:ckMethod="still"
+                                      camerakit:ckZoom="pinch"/>
+
+    <io.intheloup.moderncamera.CameraControlView
+        android:id="@+id/camera_control"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <io.intheloup.moderncamera.editor.EditorView
+        android:id="@+id/editor"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"/>
+
+</merge>

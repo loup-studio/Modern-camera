@@ -1,6 +1,7 @@
 package io.intheloup.moderncamera.editor;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.net.Uri;
@@ -15,8 +16,6 @@ import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.almeros.android.multitouch.MoveGestureDetector;
 
 import io.intheloup.moderncamera.R;
 import team.uptech.motionviews.widget.RichEditText;
@@ -41,47 +40,12 @@ public class EditorView extends FrameLayout {
     VerticalSlideColorPicker colorPicker;
     RichEditText richEditText;
 
-    private MoveGestureDetector moveGestureDetector = new MoveGestureDetector(getContext(), new MoveListener());
-
-    private class MoveListener extends MoveGestureDetector.SimpleOnMoveGestureListener {
-        @Override
-        public boolean onMove(MoveGestureDetector detector) {
-            if (mode == MODE_TEXT_SIMPLE && editText.getText().length() > 0) {
-                simpleTextView.setTranslationY(detector.getFocusDelta().y);
-                return true;
-            }
-
-            return false;
-        }
-    }
-
     private int mode = MODE_NOTHING;
-
-    //    private boolean isModeText = false;
-//    private boolean isSimpleText = true;
     private boolean isBusy = false;
 
     private OnSubmitPictureCallback onSubmitPictureCallback;
 
     private final EditorPresenter presenter = new EditorPresenter(this);
-
-
-    //    private final RichEditText.MotionViewCallback motionViewCallback = new RichEditText.MotionViewCallback() {
-//        @Override
-//        public void onEntitySelected(@Nullable MotionEntity entity) {
-////            if (entity instanceof TextEntity) {
-////                motionViewEditPanel.setVisibility(View.VISIBLE);
-////            } else {
-////                motionViewEditPanel.setVisibility(View.GONE);
-////            }
-//        }
-//
-//        @Override
-//        public void onEntityDoubleTap(@NonNull MotionEntity entity) {
-//            startTextEntityEditing();
-//        }
-//    };
-
 
     public EditorView(Context context) {
         super(context);
@@ -234,12 +198,12 @@ public class EditorView extends FrameLayout {
         onSubmitPictureCallback.onSubmitPicture(uri);
     }
 
-    public void setPicture(Uri uri) {
-        pictureImageView.setImageURI(uri);
+    public void setPicture(Bitmap bitmap) {
+        pictureImageView.setImageBitmap(bitmap);
     }
 
     public void clear() {
-        pictureImageView.setImageURI(null);
+        pictureImageView.setImageBitmap(null);
 
         editText.setText("");
         editText.setTextColor(Color.WHITE);

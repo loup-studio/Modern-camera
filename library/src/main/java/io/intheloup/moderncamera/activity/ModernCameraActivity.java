@@ -1,16 +1,12 @@
 package io.intheloup.moderncamera.activity;
 
-import android.Manifest;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 
 import io.intheloup.moderncamera.ModernCameraView;
+import io.intheloup.moderncamera.editor.EditorView;
 
 public class ModernCameraActivity extends AppCompatActivity {
 
@@ -23,37 +19,47 @@ public class ModernCameraActivity extends AppCompatActivity {
         cameraView = new ModernCameraView(this);
         setContentView(cameraView);
 
-        cameraView.onTakePicture(new ModernCameraView.OnTakePictureCallback() {
+        cameraView.editorView.onSubmitPicture(new EditorView.OnSubmitPictureCallback() {
             @Override
-            public void onTakePicture(Uri uri) {
+            public void onSubmitPicture(Uri uri) {
                 Intent intent = new Intent();
                 intent.putExtra("uri", uri);
                 setResult(RESULT_OK, intent);
                 finish();
             }
         });
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
         startCamera();
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (requestCode != 10) {
-            return;
-        }
-
-        boolean isValid = true;
-        for (int i = 0; i < grantResults.length; ++i) {
-            if (grantResults[i] != PackageManager.PERMISSION_GRANTED) {
-                isValid = false;
-                break;
-            }
-        }
-
-        if (isValid) {
-            startCamera();
-        }
+    protected void onPause() {
+        cameraView.stop();
+        super.onPause();
     }
+
+//    @Override
+//    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+//        if (requestCode != 10) {
+//            return;
+//        }
+//
+//        boolean isValid = true;
+//        for (int i = 0; i < grantResults.length; ++i) {
+//            if (grantResults[i] != PackageManager.PERMISSION_GRANTED) {
+//                isValid = false;
+//                break;
+//            }
+//        }
+//
+//        if (isValid) {
+//            cameraView.start();
+//        }
+//    }
 
     @Override
     public void onBackPressed() {
@@ -66,16 +72,16 @@ public class ModernCameraActivity extends AppCompatActivity {
 
 
     private void startCamera() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED ||
-                ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED ||
-                ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{
-                    Manifest.permission.CAMERA,
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                    Manifest.permission.READ_EXTERNAL_STORAGE
-            }, 10);
-            return;
-        }
+//        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED ||
+//                ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED ||
+//                ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+//            ActivityCompat.requestPermissions(this, new String[]{
+//                    Manifest.permission.CAMERA,
+//                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
+//                    Manifest.permission.READ_EXTERNAL_STORAGE
+//            }, 10);
+//            return;
+//        }
 
         cameraView.start();
     }

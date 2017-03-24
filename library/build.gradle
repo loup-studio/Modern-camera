@@ -20,12 +20,15 @@ android {
 }
 
 repositories {
-    maven {
-        url "https://s3.amazonaws.com/repo.commonsware.com"
-    }
+//    maven {
+//        url "https://s3.amazonaws.com/repo.commonsware.com"
+//    }
+    maven { url 'https://jitpack.io' }
 }
 
 dependencies {
     compile 'com.android.support:appcompat-v7:25.2.0'
-    compile 'com.commonsware.cwac:cam2:0.7.4'
+//    compile 'com.commonsware.cwac:cam2:0.7.4'
+    compile 'com.github.baurine:CameraKit-Android:publish_to_jitpack-SNAPSHOT'
+//    compile 'com.github.gogopop:CameraKit-Android:-SNAPSHOT'
 }

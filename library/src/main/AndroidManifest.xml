@@ -4,6 +4,7 @@
     <application>
         <activity
             android:name="io.intheloup.moderncamera.activity.ModernCameraActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/ModernCameraTheme"
             />
     </application>
